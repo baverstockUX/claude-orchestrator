@@ -4,8 +4,8 @@ import logging
 from pathlib import Path
 from typing import Optional
 
-import git
 from git import Repo
+import git as gitpython
 
 logger = logging.getLogger(__name__)
 
@@ -49,7 +49,7 @@ class WorktreeManager:
             Path to worktree directory
 
         Raises:
-            git.GitCommandError: If worktree creation fails
+            gitpython.GitCommandError: If worktree creation fails
         """
         worktree_path = self.worktrees_dir / branch_name
 
@@ -69,7 +69,7 @@ class WorktreeManager:
             logger.info(f"Created worktree: {worktree_path}")
             return worktree_path
 
-        except git.GitCommandError as e:
+        except gitpython.GitCommandError as e:
             logger.error(f"Failed to create worktree {branch_name}: {e}")
             raise
 
@@ -93,7 +93,7 @@ class WorktreeManager:
             Commit SHA
 
         Raises:
-            git.GitCommandError: If commit fails
+            gitpython.GitCommandError: If commit fails
         """
         worktree_repo = Repo(worktree_path)
 
@@ -109,7 +109,7 @@ class WorktreeManager:
         if author_name and author_email:
             worktree_repo.index.commit(
                 message,
-                author=git.Actor(author_name, author_email)
+                author=gitpython.Actor(author_name, author_email)
             )
         else:
             worktree_repo.index.commit(message)
@@ -127,7 +127,7 @@ class WorktreeManager:
             force: Force removal even if worktree is dirty
 
         Raises:
-            git.GitCommandError: If removal fails
+            gitpython.GitCommandError: If removal fails
         """
         if not worktree_path.exists():
             logger.warning(f"Worktree {worktree_path} does not exist")
@@ -141,7 +141,7 @@ class WorktreeManager:
             self.repo.git.worktree(*args)
             logger.info(f"Removed worktree: {worktree_path}")
 
-        except git.GitCommandError as e:
+        except gitpython.GitCommandError as e:
             logger.error(f"Failed to remove worktree {worktree_path}: {e}")
             raise
 
@@ -188,7 +188,7 @@ class WorktreeManager:
             force: Force deletion even if not fully merged
 
         Raises:
-            git.GitCommandError: If deletion fails
+            gitpython.GitCommandError: If deletion fails
         """
         try:
             if force:
@@ -198,6 +198,6 @@ class WorktreeManager:
 
             logger.info(f"Deleted branch: {branch_name}")
 
-        except git.GitCommandError as e:
+        except gitpython.GitCommandError as e:
             logger.error(f"Failed to delete branch {branch_name}: {e}")
             raise
