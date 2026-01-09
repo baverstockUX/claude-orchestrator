@@ -1,0 +1,49 @@
+[project]
+name = "claude-orchestrator"
+version = "0.1.0"
+description = "Multi-agent orchestration system for parallel Claude instances"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.115.0",
+    "uvicorn[standard]>=0.32.0",
+    "redis>=5.2.0",
+    "sqlalchemy>=2.0.36",
+    "psycopg[binary]>=3.2.3",
+    "gitpython>=3.1.43",
+    "boto3>=1.35.71",
+    "typer>=0.15.1",
+    "rich>=13.9.4",
+    "python-dotenv>=1.0.1",
+    "pydantic>=2.10.3",
+    "pydantic-settings>=2.6.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3.4",
+    "pytest-asyncio>=0.25.0",
+    "mypy>=1.13.0",
+    "ruff>=0.8.4",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W"]
+ignore = []
+
+[tool.mypy]
+python_version = "3.12"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+
+[project.scripts]
+orchestrator = "backend.cli.commands:app"
