@@ -248,3 +248,333 @@ Format each file like this:
 ```
 
 Begin your implementation now."""
+
+
+def get_frontend_agent_prompt(task, existing_files: dict[str, str]) -> str:
+    """Generate prompt for FrontendAgent."""
+    context = ""
+    if existing_files:
+        context = "\n## Existing Files to Modify\n\n"
+        for path, content in existing_files.items():
+            context += f"### {path}\n```\n{content}\n```\n\n"
+
+    return f"""# Frontend Task
+
+## Task Details
+**ID**: {task.id}
+**Title**: {task.title}
+**Description**: {task.description}
+
+## Files to Create
+{chr(10).join(f"- {f}" for f in task.files_to_create) if task.files_to_create else "- None"}
+
+## Files to Modify
+{chr(10).join(f"- {f}" for f in task.files_to_modify) if task.files_to_modify else "- None"}
+{context}
+
+## Instructions
+
+Implement this Vue 3 + Mosaic Design System task. Follow these guidelines:
+
+1. Use Vue 3 Composition API with `<script setup lang="ts">`
+2. Use Mosaic Design System components (mds-button, mds-input, mds-card, etc.)
+3. Write TypeScript with proper type definitions
+4. Follow Vue style guide and MDS patterns
+5. Ensure responsive design and accessibility
+
+## Output Format
+
+For each file, use this format:
+
+```vue
+<!-- filepath: src/components/MyComponent.vue -->
+<template>
+  <div>
+    <!-- Component template -->
+  </div>
+</template>
+
+<script setup lang="ts">
+// Component logic
+</script>
+
+<style scoped>
+/* Component styles */
+</style>
+```
+
+Provide complete, production-ready code for all files."""
+
+
+def get_backend_agent_prompt(task, existing_files: dict[str, str]) -> str:
+    """Generate prompt for BackendAgent."""
+    context = ""
+    if existing_files:
+        context = "\n## Existing Files to Modify\n\n"
+        for path, content in existing_files.items():
+            context += f"### {path}\n```python\n{content}\n```\n\n"
+
+    return f"""# Backend Task
+
+## Task Details
+**ID**: {task.id}
+**Title**: {task.title}
+**Description**: {task.description}
+
+## Files to Create
+{chr(10).join(f"- {f}" for f in task.files_to_create) if task.files_to_create else "- None"}
+
+## Files to Modify
+{chr(10).join(f"- {f}" for f in task.files_to_modify) if task.files_to_modify else "- None"}
+{context}
+
+## Instructions
+
+Implement this FastAPI backend task. Follow these guidelines:
+
+1. Use async/await patterns for FastAPI endpoints
+2. Use SQLAlchemy 2.0+ async patterns for database
+3. Use Pydantic v2 for request/response models
+4. Include proper error handling with HTTPException
+5. Add input validation and proper status codes
+6. Follow RESTful API conventions
+
+## Output Format
+
+For each file, use this format:
+
+```python
+# filepath: backend/api/routes.py
+from fastapi import APIRouter, HTTPException
+from pydantic import BaseModel
+
+# Implementation code here
+```
+
+Provide complete, production-ready code for all files."""
+
+
+def get_testing_agent_prompt(task, existing_files: dict[str, str]) -> str:
+    """Generate prompt for TestingAgent."""
+    context = ""
+    if existing_files:
+        context = "\n## Files to Test\n\n"
+        for path, content in existing_files.items():
+            context += f"### {path}\n```\n{content}\n```\n\n"
+
+    return f"""# Testing Task
+
+## Task Details
+**ID**: {task.id}
+**Title**: {task.title}
+**Description**: {task.description}
+
+## Files to Create
+{chr(10).join(f"- {f}" for f in task.files_to_create) if task.files_to_create else "- None"}
+
+## Files to Modify
+{chr(10).join(f"- {f}" for f in task.files_to_modify) if task.files_to_modify else "- None"}
+{context}
+
+## Instructions
+
+Write comprehensive tests for this task. Follow these guidelines:
+
+1. For Python: Use pytest with async support, fixtures, and parametrize
+2. For TypeScript/Vue: Use vitest with Vue Test Utils
+3. Include unit tests for all functions/methods
+4. Include integration tests for API endpoints
+5. Test edge cases and error scenarios
+6. Aim for high coverage (>80%)
+7. Use clear test names that describe what's being tested
+
+## Output Format
+
+For each test file, use this format:
+
+```python
+# filepath: tests/test_something.py
+import pytest
+
+def test_something():
+    # Test implementation
+    pass
+```
+
+Or for TypeScript:
+
+```typescript
+# filepath: tests/something.test.ts
+import { describe, it, expect } from 'vitest'
+
+describe('Something', () => {{
+  it('should do something', () => {{
+    // Test implementation
+  }})
+}})
+```
+
+Provide complete test coverage for all functionality."""
+
+
+def get_docs_agent_prompt(task, existing_files: dict[str, str]) -> str:
+    """Generate prompt for DocsAgent."""
+    context = ""
+    if existing_files:
+        context = "\n## Existing Files (for context)\n\n"
+        for path, content in existing_files.items():
+            context += f"### {path}\n```\n{content[:500]}...\n```\n\n"
+
+    return f"""# Documentation Task
+
+## Task Details
+**ID**: {task.id}
+**Title**: {task.title}
+**Description**: {task.description}
+
+## Files to Create
+{chr(10).join(f"- {f}" for f in task.files_to_create) if task.files_to_create else "- None"}
+
+## Files to Modify
+{chr(10).join(f"- {f}" for f in task.files_to_modify) if task.files_to_modify else "- None"}
+{context}
+
+## Instructions
+
+Write clear, comprehensive documentation. Follow these guidelines:
+
+1. Use proper Markdown formatting
+2. Include code examples where relevant
+3. Structure content with clear headings
+4. Add table of contents for longer docs
+5. Use Mermaid diagrams for architecture
+6. Keep language clear and concise
+7. Include setup/installation instructions
+
+## Output Format
+
+For each documentation file:
+
+```markdown
+<!-- filepath: README.md -->
+# Project Title
+
+Clear, comprehensive documentation here...
+```
+
+Provide complete documentation that helps developers understand and use the code."""
+
+
+def get_infra_agent_prompt(task, existing_files: dict[str, str]) -> str:
+    """Generate prompt for InfraAgent."""
+    context = ""
+    if existing_files:
+        context = "\n## Existing Files to Modify\n\n"
+        for path, content in existing_files.items():
+            context += f"### {path}\n```\n{content}\n```\n\n"
+
+    return f"""# Infrastructure Task
+
+## Task Details
+**ID**: {task.id}
+**Title**: {task.title}
+**Description**: {task.description}
+
+## Files to Create
+{chr(10).join(f"- {f}" for f in task.files_to_create) if task.files_to_create else "- None"}
+
+## Files to Modify
+{chr(10).join(f"- {f}" for f in task.files_to_modify) if task.files_to_modify else "- None"}
+{context}
+
+## Instructions
+
+Create infrastructure configuration files. Follow these guidelines:
+
+1. For Dockerfiles: Use multi-stage builds, minimize image size
+2. For CI/CD: Use GitHub Actions with proper caching
+3. For configs: Use environment variables for secrets
+4. Include health checks and proper logging
+5. Follow security best practices (no hardcoded secrets)
+6. Add comments explaining configuration choices
+
+## Output Format
+
+For each configuration file:
+
+```yaml
+# filepath: .github/workflows/ci.yml
+name: CI Pipeline
+
+# Configuration here
+```
+
+Or for Dockerfiles:
+
+```dockerfile
+# filepath: Dockerfile
+FROM python:3.12-slim
+
+# Dockerfile content
+```
+
+Provide production-ready infrastructure configurations."""
+
+
+def get_integration_agent_prompt(task, existing_files: dict[str, str]) -> str:
+    """Generate prompt for IntegrationAgent."""
+    context = ""
+    if existing_files:
+        context = "\n## Existing Files to Modify\n\n"
+        for path, content in existing_files.items():
+            context += f"### {path}\n```\n{content}\n```\n\n"
+
+    return f"""# Integration Task
+
+## Task Details
+**ID**: {task.id}
+**Title**: {task.title}
+**Description**: {task.description}
+
+## Files to Create
+{chr(10).join(f"- {f}" for f in task.files_to_create) if task.files_to_create else "- None"}
+
+## Files to Modify
+{chr(10).join(f"- {f}" for f in task.files_to_modify) if task.files_to_modify else "- None"}
+{context}
+
+## Instructions
+
+Implement third-party API integration. Follow these guidelines:
+
+1. Use proper authentication (API keys, OAuth, etc.)
+2. Include comprehensive error handling
+3. Implement retry logic with exponential backoff
+4. Handle rate limiting properly
+5. Add request/response logging
+6. Use environment variables for credentials
+7. Include timeout configuration
+8. Validate responses and handle errors gracefully
+
+## Output Format
+
+For each file:
+
+```python
+# filepath: backend/integrations/stripe.py
+import httpx
+from typing import Optional
+
+# Integration implementation
+```
+
+Or for TypeScript:
+
+```typescript
+# filepath: src/services/stripe.ts
+import Stripe from 'stripe'
+
+// Integration implementation
+```
+
+Provide robust, production-ready integration code."""
