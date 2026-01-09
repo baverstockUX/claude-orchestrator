@@ -201,3 +201,55 @@ class MergeStrategy:
             True if there are uncommitted changes
         """
         return self.repo.is_dirty(untracked_files=True)
+
+    def _get_changed_files(self, branch_name: str) -> list[str]:
+        """
+        Get list of files changed in branch compared to merge base.
+
+        Args:
+            branch_name: Branch to check
+
+        Returns:
+            List of changed file paths
+        """
+        try:
+            # Find merge base with target branch
+            merge_base = self.get_merge_base(branch_name, "main")
+
+            # Get files changed since merge base
+            diff = self.repo.git.diff("--name-only", merge_base, branch_name)
+            return [f for f in diff.split("\n") if f]
+        except Exception as e:
+            logger.error(f"Error getting changed files for {branch_name}: {e}")
+            return []
+
+    def _has_diverged(self, file_path: str, branch_name: str) -> bool:
+        """
+        Check if file has diverged (modified in both branches since merge base).
+
+        Args:
+            file_path: Path to file
+            branch_name: Agent's branch name
+
+        Returns:
+            True if file modified in both branches
+        """
+        try:
+            # Find merge base
+            merge_base = self.get_merge_base(branch_name, "main")
+
+            # Check if file modified in agent branch
+            agent_diff = self.repo.git.diff("--name-only", merge_base, branch_name)
+            modified_in_agent = file_path in agent_diff
+
+            # Check if file modified in main branch
+            main_diff = self.repo.git.diff("--name-only", merge_base, "main")
+            modified_in_main = file_path in main_diff
+
+            # Diverged if modified in both
+            return modified_in_agent and modified_in_main
+
+        except Exception as e:
+            logger.error(f"Error checking divergence for {file_path}: {e}")
+            # Assume diverged on error (safer)
+            return True
