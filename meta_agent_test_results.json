@@ -1,0 +1,361 @@
+{
+  "project_plan": {
+    "project_name": "Todo Application with Vue 3 and FastAPI",
+    "description": "A full-stack todo application with Vue 3 frontend using Mosaic Design System and FastAPI backend with SQLAlchemy",
+    "estimated_total_hours": 28.5,
+    "tasks": [
+      {
+        "id": "task_001",
+        "title": "Setup FastAPI project structure and configuration",
+        "description": "Initialize FastAPI application with project structure, configuration files, database setup, and CORS middleware",
+        "agent_type": "backend",
+        "files_to_create": [
+          "backend/main.py",
+          "backend/config.py",
+          "backend/database.py",
+          "backend/requirements.txt",
+          "backend/.env.example"
+        ],
+        "files_to_modify": [],
+        "dependencies": [],
+        "estimated_hours": 2.0,
+        "created_at": "",
+        "project_id": "test_todo_app"
+      },
+      {
+        "id": "task_002",
+        "title": "Create SQLAlchemy Todo model",
+        "description": "Define SQLAlchemy model for Todo with id, title, completed status, and timestamps",
+        "agent_type": "backend",
+        "files_to_create": [
+          "backend/models/todo.py",
+          "backend/models/__init__.py"
+        ],
+        "files_to_modify": [
+          "backend/database.py"
+        ],
+        "dependencies": [
+          "task_001"
+        ],
+        "estimated_hours": 1.5,
+        "created_at": "",
+        "project_id": "test_todo_app"
+      },
+      {
+        "id": "task_003",
+        "title": "Create Pydantic schemas for validation",
+        "description": "Define Pydantic schemas for Todo request validation and response serialization with input validation rules",
+        "agent_type": "backend",
+        "files_to_create": [
+          "backend/schemas/todo.py",
+          "backend/schemas/__init__.py"
+        ],
+        "files_to_modify": [],
+        "dependencies": [
+          "task_002"
+        ],
+        "estimated_hours": 1.5,
+        "created_at": "",
+        "project_id": "test_todo_app"
+      },
+      {
+        "id": "task_004",
+        "title": "Implement CRUD operations for Todo API",
+        "description": "Create FastAPI endpoints for Create, Read, Update, Delete operations with error handling and status filtering",
+        "agent_type": "backend",
+        "files_to_create": [
+          "backend/routes/todos.py",
+          "backend/routes/__init__.py",
+          "backend/crud/todo.py",
+          "backend/crud/__init__.py"
+        ],
+        "files_to_modify": [
+          "backend/main.py"
+        ],
+        "dependencies": [
+          "task_003"
+        ],
+        "estimated_hours": 3.0,
+        "created_at": "",
+        "project_id": "test_todo_app"
+      },
+      {
+        "id": "task_005",
+        "title": "Setup Vue 3 project with Mosaic Design System",
+        "description": "Initialize Vue 3 project with TypeScript, install Mosaic Design System, configure routing and state management",
+        "agent_type": "frontend",
+        "files_to_create": [
+          "frontend/package.json",
+          "frontend/tsconfig.json",
+          "frontend/vite.config.ts",
+          "frontend/src/main.ts",
+          "frontend/src/App.vue",
+          "frontend/index.html"
+        ],
+        "files_to_modify": [],
+        "dependencies": [],
+        "estimated_hours": 2.0,
+        "created_at": "",
+        "project_id": "test_todo_app"
+      },
+      {
+        "id": "task_006",
+        "title": "Create API service layer for frontend",
+        "description": "Implement TypeScript API client with methods for all CRUD operations and error handling",
+        "agent_type": "frontend",
+        "files_to_create": [
+          "frontend/src/services/api.ts",
+          "frontend/src/services/todoService.ts",
+          "frontend/src/types/todo.ts"
+        ],
+        "files_to_modify": [],
+        "dependencies": [
+          "task_005"
+        ],
+        "estimated_hours": 2.0,
+        "created_at": "",
+        "project_id": "test_todo_app"
+      },
+      {
+        "id": "task_007",
+        "title": "Build TodoList component with checkboxes",
+        "description": "Create Vue 3 component to display todos with Mosaic checkboxes, toggle completion status, and delete functionality",
+        "agent_type": "frontend",
+        "files_to_create": [
+          "frontend/src/components/TodoList.vue",
+          "frontend/src/components/TodoItem.vue"
+        ],
+        "files_to_modify": [],
+        "dependencies": [
+          "task_006"
+        ],
+        "estimated_hours": 2.5,
+        "created_at": "",
+        "project_id": "test_todo_app"
+      },
+      {
+        "id": "task_008",
+        "title": "Build Add Todo input form component",
+        "description": "Create Vue 3 form component with Mosaic input field and button to add new todos with validation",
+        "agent_type": "frontend",
+        "files_to_create": [
+          "frontend/src/components/TodoForm.vue"
+        ],
+        "files_to_modify": [],
+        "dependencies": [
+          "task_006"
+        ],
+        "estimated_hours": 1.5,
+        "created_at": "",
+        "project_id": "test_todo_app"
+      },
+      {
+        "id": "task_009",
+        "title": "Implement filter component for todo status",
+        "description": "Create Vue 3 filter component with Mosaic buttons to filter todos by all/active/completed status",
+        "agent_type": "frontend",
+        "files_to_create": [
+          "frontend/src/components/TodoFilter.vue"
+        ],
+        "files_to_modify": [],
+        "dependencies": [
+          "task_006"
+        ],
+        "estimated_hours": 1.5,
+        "created_at": "",
+        "project_id": "test_todo_app"
+      },
+      {
+        "id": "task_010",
+        "title": "Create main Todo page with responsive layout",
+        "description": "Compose all todo components into main page with responsive Mosaic grid layout and state management",
+        "agent_type": "frontend",
+        "files_to_create": [
+          "frontend/src/views/TodoPage.vue",
+          "frontend/src/composables/useTodos.ts"
+        ],
+        "files_to_modify": [
+          "frontend/src/App.vue"
+        ],
+        "dependencies": [
+          "task_007",
+          "task_008",
+          "task_009"
+        ],
+        "estimated_hours": 2.0,
+        "created_at": "",
+        "project_id": "test_todo_app"
+      },
+      {
+        "id": "task_011",
+        "title": "Write unit tests for backend API endpoints",
+        "description": "Create pytest unit tests for all CRUD endpoints with test database, fixtures, and error scenarios",
+        "agent_type": "testing",
+        "files_to_create": [
+          "backend/tests/test_todos.py",
+          "backend/tests/conftest.py",
+          "backend/tests/__init__.py",
+          "backend/pytest.ini"
+        ],
+        "files_to_modify": [
+          "backend/requirements.txt"
+        ],
+        "dependencies": [
+          "task_004"
+        ],
+        "estimated_hours": 3.0,
+        "created_at": "",
+        "project_id": "test_todo_app"
+      },
+      {
+        "id": "task_012",
+        "title": "Write frontend component tests",
+        "description": "Create Vitest unit tests for Vue components including TodoList, TodoForm, TodoFilter, and TodoItem",
+        "agent_type": "testing",
+        "files_to_create": [
+          "frontend/src/components/__tests__/TodoList.spec.ts",
+          "frontend/src/components/__tests__/TodoItem.spec.ts",
+          "frontend/src/components/__tests__/TodoForm.spec.ts",
+          "frontend/src/components/__tests__/TodoFilter.spec.ts",
+          "frontend/vitest.config.ts"
+        ],
+        "files_to_modify": [
+          "frontend/package.json"
+        ],
+        "dependencies": [
+          "task_010"
+        ],
+        "estimated_hours": 3.0,
+        "created_at": "",
+        "project_id": "test_todo_app"
+      },
+      {
+        "id": "task_013",
+        "title": "Create Docker configuration files",
+        "description": "Set up Docker and docker-compose for both frontend and backend with development and production configurations",
+        "agent_type": "infra",
+        "files_to_create": [
+          "docker-compose.yml",
+          "backend/Dockerfile",
+          "frontend/Dockerfile",
+          ".dockerignore"
+        ],
+        "files_to_modify": [],
+        "dependencies": [
+          "task_001",
+          "task_005"
+        ],
+        "estimated_hours": 2.5,
+        "created_at": "",
+        "project_id": "test_todo_app"
+      },
+      {
+        "id": "task_014",
+        "title": "Write comprehensive README documentation",
+        "description": "Create detailed README with project overview, setup instructions, running locally, Docker setup, and development workflow",
+        "agent_type": "docs",
+        "files_to_create": [
+          "README.md",
+          "backend/README.md",
+          "frontend/README.md"
+        ],
+        "files_to_modify": [],
+        "dependencies": [
+          "task_013"
+        ],
+        "estimated_hours": 2.0,
+        "created_at": "",
+        "project_id": "test_todo_app"
+      },
+      {
+        "id": "task_015",
+        "title": "Generate API documentation",
+        "description": "Create OpenAPI/Swagger documentation for FastAPI endpoints with request/response examples and schemas",
+        "agent_type": "docs",
+        "files_to_create": [
+          "backend/docs/API.md"
+        ],
+        "files_to_modify": [
+          "backend/main.py"
+        ],
+        "dependencies": [
+          "task_004"
+        ],
+        "estimated_hours": 1.5,
+        "created_at": "",
+        "project_id": "test_todo_app"
+      }
+    ]
+  },
+  "execution_plan": {
+    "total_levels": 5,
+    "levels": [
+      {
+        "level_number": 1,
+        "parallel_tasks": 2,
+        "task_ids": [
+          "task_001",
+          "task_005"
+        ],
+        "estimated_hours": 2.0
+      },
+      {
+        "level_number": 2,
+        "parallel_tasks": 3,
+        "task_ids": [
+          "task_002",
+          "task_006",
+          "task_013"
+        ],
+        "estimated_hours": 2.5
+      },
+      {
+        "level_number": 3,
+        "parallel_tasks": 5,
+        "task_ids": [
+          "task_009",
+          "task_008",
+          "task_007",
+          "task_003",
+          "task_014"
+        ],
+        "estimated_hours": 2.5
+      },
+      {
+        "level_number": 4,
+        "parallel_tasks": 2,
+        "task_ids": [
+          "task_010",
+          "task_004"
+        ],
+        "estimated_hours": 3.0
+      },
+      {
+        "level_number": 5,
+        "parallel_tasks": 3,
+        "task_ids": [
+          "task_015",
+          "task_012",
+          "task_011"
+        ],
+        "estimated_hours": 3.0
+      }
+    ],
+    "critical_path": {
+      "task_ids": [
+        "task_005",
+        "task_006",
+        "task_007",
+        "task_010",
+        "task_012"
+      ],
+      "total_hours": 11.5
+    },
+    "statistics": {
+      "total_tasks": 15,
+      "sequential_hours": 31.5,
+      "parallel_hours": 13.0,
+      "speedup_factor": 2.423076923076923
+    }
+  }
+}
